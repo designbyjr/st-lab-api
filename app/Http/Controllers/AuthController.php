@@ -15,6 +15,10 @@ class AuthController extends Controller
 {
     use HttpResponse;
 
+    /**
+     * @param LoginUserRequest $request
+     * @return JsonResponse
+     */
     public function login(LoginUserRequest $request): JsonResponse
     {
         $request->validated();
@@ -30,11 +34,19 @@ class AuthController extends Controller
         ],"Login Successful",202);
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function logout()
     {
-        return "Logout Success";
+        Auth::user()->currentAccessToken()->delete();
+        return $this->success([],"Logged out Successfully",200);
     }
 
+    /**
+     * @param StoreUserRequest $request
+     * @return JsonResponse
+     */
     public function register(StoreUserRequest $request): JsonResponse
     {
         $request->validated();
