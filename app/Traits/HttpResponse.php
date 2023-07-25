@@ -28,9 +28,24 @@ trait HttpResponse
     protected function error($data, $message = null, $code)
     {
         return response()->json([
-            'status' => "Error Has Occurred",
+            'status' => $this->codeMessage($code),
             "message"=> $message,
             "data" => $data
         ], $code);
+    }
+
+    private function codeMessage(int $code){
+         switch ($code){
+            case "404": "Not Found";
+                break;
+            case "403": "Forbidden";
+                break;
+            case "401": "Unauthorized";
+                break;
+            case "405": "Method Not Allowed";
+                break;
+            default: "Error Has Occurred";
+                break;
+        }
     }
 }
