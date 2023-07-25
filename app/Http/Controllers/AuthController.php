@@ -9,12 +9,13 @@ use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use \Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
     use HttpResponse;
 
-    public function login(LoginUserRequest $request)
+    public function login(LoginUserRequest $request): JsonResponse
     {
         $request->validated();
 
@@ -34,7 +35,7 @@ class AuthController extends Controller
         return "Logout Success";
     }
 
-    public function register(StoreUserRequest $request)
+    public function register(StoreUserRequest $request): JsonResponse
     {
         $request->validated();
 
@@ -43,10 +44,12 @@ class AuthController extends Controller
             'email ' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+
         return $this->success([
             'user' => $user,
             'bearer_token' => $user->createToken('API Token Of '. $user->name)->plainTextToken
-        ],"Registered Successfully",201);
+                                                    ],"Registered Successfully",201);
+
     }
 
 }
