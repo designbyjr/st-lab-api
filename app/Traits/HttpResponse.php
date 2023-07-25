@@ -4,6 +4,12 @@ namespace App\Traits;
 
 trait HttpResponse
 {
+    /**
+     * @param $data
+     * @param null $message
+     * @param int $code
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function success($data, $message = null, $code = 201)
     {
         return response()->json([
@@ -13,6 +19,12 @@ trait HttpResponse
         ], $code);
     }
 
+    /**
+     * @param $data
+     * @param null $message
+     * @param $code
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function error($data, $message = null, $code)
     {
         return response()->json([
