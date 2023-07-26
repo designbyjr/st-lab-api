@@ -15,22 +15,22 @@ class ProductsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return AnonymousResourceCollection
+     * @return \Illuminate\Http\JsonResponse|AnonymousResourceCollection|object
      */
-    public function index(): AnonymousResourceCollection
+    public function index()
     {
         return ProductResource::collection(
           Products::all()
-        );
+        )->response()->setStatusCode(201);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return ProductResource
+     * @return ProductResource|\Illuminate\Http\JsonResponse|object
      */
-    public function store(StoreProductRequest $request): ProductResource
+    public function store(StoreProductRequest $request)
     {
         $request->validated();
 
@@ -41,19 +41,19 @@ class ProductsController extends Controller
             "category"  => $request->category
         ]);
 
-        return ProductResource::make($product);
+        return ProductResource::make($product)->response()->setStatusCode(201);
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Products $products
-     * @return ProductResource
+     * @param  Products $product
+     * @return ProductResource|\Illuminate\Http\JsonResponse|object
      */
-    public function show(Products $products): ProductResource
+    public function show(Products $product)
     {
-       return ProductResource::make($products);
+       return ProductResource::make($product)->response()->setStatusCode(201);
     }
 
 
@@ -61,14 +61,14 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param Products $products
-     * @return ProductResource
+     * @param Products $product
+     * @return ProductResource|\Illuminate\Http\JsonResponse|object
      */
-    public function update(Request $request, Products $products): ProductResource
+    public function update(Request $request, Products $product)
     {
-        $products->update($request->all());
+        $product->update($request->all());
 
-        return ProductResource::make($products);
+        return ProductResource::make($product)->response()->setStatusCode(201);
     }
 
     /**

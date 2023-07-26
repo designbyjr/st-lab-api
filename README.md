@@ -1,66 +1,145 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Store-Lab
 
-## About Laravel
+I have designed, developed, and containerized a RESTful API for a simple e-commerce application using Laravel and Docker.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+I have created a docker conatiner using laravel sail. 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The IP address for the project is:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+`0.0.0.0`
 
-## Learning Laravel
+You will need to have composer and php 8.1 or greater installed and docker.
+Make sure docker is running before running commands below in order.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+DO:
+```bash
+Composer Install
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+php artisan sail:install
 
-## Laravel Sponsors
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+sail up
 
-### Premium Partners
+sail php artisan migrate -seed
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## API Reference
 
-## Code of Conduct
+#### Login
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```http
+  POST /api/login
+```
 
-## Security Vulnerabilities
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `email` | `string` | **Required**. Your email address |
+| `password` | `string` | **Required**. Your password |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+Returns user and Bearer token.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# st-lab-api
-# st-lab-api
+#### Register
+
+```http
+  POST /api/register
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `name` | `string` | **Required**. Your name |
+| `email` | `string` | **Required**. Your email address |
+| `password` | `string` | **Required**. Your password |
+| `password_confirmation` | `string` | **Required**. Your confirmation of your password |
+
+Returns user and Bearer token.
+
+#### Logout
+
+```http
+  POST /api/logout
+```
+
+`Only Bearer token is required.`
+
+
+#### Get product by ID
+
+```http
+  GET /api/products/${id}
+```
+`Bearer token is required.`
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id of item to fetch |
+
+Returns one product by ID.
+
+#### Get all products
+
+```http
+  GET /api/products/
+```
+`Bearer token is required.`
+
+Returns all products
+
+#### Create a product.
+
+```http
+  POST /api/products/
+```
+`Bearer token is required.`
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `name`      | `string` | **Required**. Name of product |
+| `color`      | `string` | **Required**.  color of product |
+| `price`      | `numeric` | **Required**.  price of product|
+| `category`      | `string` | **Required**.  category of product|
+
+
+Returns newly created product, limited to one product at a time
+
+
+#### Update a product by ID.
+
+```http
+  PUT /api/products/${id}
+```
+`Bearer token is required.`
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `name`      | `string` | **Required**. Name of product |
+| `color`      | `string` | **Required**.  color of product |
+| `price`      | `numeric` | **Required**.  price of product|
+| `category`      | `string` | **Required**.  category of product|
+
+
+Returns newly updated product, limited to one product at a time
+
+
+#### Delete a product by ID.
+
+```http
+  DELETE /api/products/${id}
+```
+`Bearer token is required.`
+
+Returns blank array on success.
+
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  sail php artisan test
+```
+

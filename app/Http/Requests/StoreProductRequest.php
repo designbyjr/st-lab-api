@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 
 class StoreProductRequest extends FormRequest
 {
@@ -13,7 +16,7 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -26,8 +29,24 @@ class StoreProductRequest extends FormRequest
         return [
             "name"=> ['string', 'required', 'max:255'],
             "color" => ['string', 'required', 'max:255'],
-            "price"=> ['string', 'required', 'max:255'],
+            "price"=> ['numeric', 'required', 'max:255'],
             "category" => ['string', 'required', 'max:255'],
         ];
+    }
+
+    /**
+     * @param Validator $validator
+     */
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+
+            'success'   => false,
+
+            'message'   => 'Validation errors',
+
+            'data'      => $validator->errors()
+
+        ]));
     }
 }

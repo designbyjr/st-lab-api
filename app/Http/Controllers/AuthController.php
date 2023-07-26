@@ -19,11 +19,9 @@ class AuthController extends Controller
      * @param LoginUserRequest $request
      * @return JsonResponse
      */
-    public function login(LoginUserRequest $request): JsonResponse
+    public function login(LoginUserRequest $request)
     {
-        $request->validated();
-
-        if(!Auth::attempt ([$request->only('email', 'password')])) {
+        if(!Auth::attempt ($request->only('email', 'password'))) {
             return $this->error('', 'Credentials do not match', 401);
         }
         $user = Auth::user();
@@ -46,6 +44,7 @@ class AuthController extends Controller
     /**
      * @param StoreUserRequest $request
      * @return JsonResponse
+     *
      */
     public function register(StoreUserRequest $request): JsonResponse
     {

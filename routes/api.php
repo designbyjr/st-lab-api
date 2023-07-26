@@ -16,13 +16,13 @@ use App\Http\Controllers\ProductsController;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('/products', ProductsController::class);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::resource('/products', ProductsController::class,['only' => ['index', 'update', 'store','show','destroy']]);
     Route::post("/logout",[AuthController::class, 'logout']);
 });
 
 // PUBLIC ROUTES
-Route::post("/login",[AuthController::class, 'login']);
+Route::post("/login",[AuthController::class, 'login'])->name('login');
 Route::post("/register",[AuthController::class, 'register']);
 
 
